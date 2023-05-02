@@ -1,0 +1,30 @@
+grumphp:
+  tasks:
+    phpmd:
+      whitelist_patterns: []
+      exclude: []
+      report_format: text
+      ruleset: ['cleancode', 'codesize', 'naming']
+      triggered_by: ['php']
+    phpcs:
+      standard: PSR12
+      severity: ~
+      error_severity: ~
+      warning_severity: ~
+      tab_width: ~
+      report: full
+      report_width: ~
+      whitelist_patterns: []
+      encoding: ~
+      ignore_patterns: []
+      sniffs: []
+      triggered_by: [php]
+      exclude: []
+      show_sniffs_error_path: true
+    phpunit:
+      config_file: ~
+      testsuite: ~
+      group: []
+      exclude_group: []
+      always_execute: false
+      order: null
