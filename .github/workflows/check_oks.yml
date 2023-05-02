@@ -1,0 +1,14 @@
+name: check_oks
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: composer install
+      - run: ./vendor/bin/phpunit
+      - run: ./vendor/bin/grumphp run
