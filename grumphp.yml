@@ -17,7 +17,7 @@ grumphp:
       report_width: ~
       whitelist_patterns: []
       encoding: ~
-      ignore_patterns: ["*/public/*"]
+      ignore_patterns: ["*/public/*", "*/views/*"]
       sniffs: []
       triggered_by: [php]
       exclude: []
