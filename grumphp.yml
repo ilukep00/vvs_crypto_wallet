@@ -4,7 +4,8 @@ grumphp:
       whitelist_patterns: []
       exclude: []
       report_format: text
-      ruleset: ['cleancode', 'codesize', 'naming']
+      ruleset:
+        - ruleset
       triggered_by: ['php']
     phpcs:
       standard: PSR12
@@ -16,7 +17,7 @@ grumphp:
       report_width: ~
       whitelist_patterns: []
       encoding: ~
-      ignore_patterns: []
+      ignore_patterns: ["*/public/*"]
       sniffs: []
       triggered_by: [php]
       exclude: []
