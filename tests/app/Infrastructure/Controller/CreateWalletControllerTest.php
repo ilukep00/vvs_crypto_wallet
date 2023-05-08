@@ -12,7 +12,7 @@ class CreateWalletControllerTest extends TestCase
      */
     public function returnsErrorOnInvalidRequest()
     {
-        $response = $this->post('/api/wallet/open', ['userid' => '']);
+        $response = $this->postJson('/api/wallet/open', ['userid' => '']);
 
         $response->assertBadRequest();
         $response->assertExactJson([]);
