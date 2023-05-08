@@ -3,7 +3,6 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use Tests\TestCase;
-
 use Mockery;
 
 class CreateWalletControllerTest extends TestCase
