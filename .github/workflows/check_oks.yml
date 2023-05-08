@@ -1,8 +1,7 @@
 name: check_oks
 
 on:
-  push:
-    branches: [ "master" ]
+  pull_request:
 
 jobs:
   check:
