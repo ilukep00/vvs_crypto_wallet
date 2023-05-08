@@ -27,7 +27,7 @@ class CreateWalletControllerTest extends TestCase
     {
         $response = $this->postJson('/api/wallet/open', ['userid' => '']);
 
-        $response->assertBadRequest();
+        $response->assertStatus(400);
         $response->assertExactJson([]);
     }
 
@@ -44,7 +44,7 @@ class CreateWalletControllerTest extends TestCase
 
         $response = $this->postJson('/api/wallet/open', ['user_id' => $idUsuario]);
 
-        $response->assertNotFound();
+        $response->assertStatus(404);
         $response->assertExactJson([]);
     }
 
