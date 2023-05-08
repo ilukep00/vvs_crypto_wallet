@@ -4,7 +4,7 @@ namespace App\Infrastructure\Persistence;
 
 class WalletDataSource
 {
-    public function getWallet(string $userId): array|null
+    public function createWallet(string $userId): string|null
     {
         // TODO
         return null;
