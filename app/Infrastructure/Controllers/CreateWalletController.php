@@ -24,11 +24,11 @@ class CreateWalletController extends BaseController
         if (!isset($jsonData['user_id'])) {
             return response()->json([], 400);
         }
-        $wallets = $this->walletDataSource->getWallet($jsonData['user_id']);
-        if (is_null($wallets)) {
+        $wallet = $this->walletDataSource->createWallet($jsonData['user_id']);
+        if (is_null($wallet)) {
             return response()->json([], 404);
         }
 
-        return response()->json($wallets, 200);
+        return response()->json(['wallet_id' => $wallet], 200);
     }
 }
