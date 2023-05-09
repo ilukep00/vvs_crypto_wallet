@@ -2,11 +2,20 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SellCoinController
 {
+
+    private WalletDataSource $walletDataSource;
+
+    public function __construct(WalletDataSource $walletDataSource)
+    {
+        $this->walletDataSource = $walletDataSource;
+    }
+
     public function __invoke(Request $request): JsonResponse
     {
         $jsonData = $request->json()->all();
@@ -15,6 +24,11 @@ class SellCoinController
             return response()->json([], 400);
         }
 
-        return response()->json([]);
+        $wallet = $this->walletDataSource->searchWallet($jsonData['wallet_id']);
+        if (is_null($wallet)) {
+            return response()->json([], 404);
+        }
+
+        return response()->json([], 200);
     }
 }
