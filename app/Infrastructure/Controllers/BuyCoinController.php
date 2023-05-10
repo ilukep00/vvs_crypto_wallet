@@ -16,5 +16,12 @@ class BuyCoinController extends BaseController
         if (!isset($jsonData['coin_id']) || !isset($jsonData['wallet_id']) || !isset($jsonData['amount_usd'])) {
             return response()->json([], 400);
         }
+        if (
+            gettype($jsonData['coin_id']) != 'string' ||
+            gettype($jsonData['wallet_id']) != 'string' ||
+            gettype($jsonData['amount_usd']) != 'integer'
+        ) {
+            return response()->json([], 400);
+        }
     }
 }
