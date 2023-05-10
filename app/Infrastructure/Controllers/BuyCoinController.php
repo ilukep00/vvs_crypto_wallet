@@ -13,7 +13,7 @@ class BuyCoinController extends BaseController
     {
         $jsonData = $request->json()->all();
 
-        if (!isset($jsonData['user_id']) || !isset($jsonData['wallet_id']) || !isset($jsonData['amount_usd'])) {
+        if (!isset($jsonData['coin_id']) || !isset($jsonData['wallet_id']) || !isset($jsonData['amount_usd'])) {
             return response()->json([], 400);
         }
     }
