@@ -38,7 +38,7 @@ class Wallet
     {
         foreach ($this->buyedCoins as &$actualIterationCoin) {
             if ($coin->id == $actualIterationCoin->id) {
-                $actualIterationCoin = $actualIterationCoin->add($coin);
+                $actualIterationCoin->add($coin);
                 return $actualIterationCoin;
             }
         }
