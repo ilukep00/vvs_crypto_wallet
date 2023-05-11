@@ -23,8 +23,28 @@ class Wallet
         return count($this->buyedCoins);
     }
 
-    public function buy(Coin $coin): void
+    public function getCoinById(int $id): Coin|null
     {
+        foreach ($this->buyedCoins as &$actualIterationCoin) {
+            if ($id == $actualIterationCoin->id) {
+                return $actualIterationCoin;
+            }
+        }
+
+        return null;
+    }
+
+    public function buy(Coin $coin): Coin
+    {
+        foreach ($this->buyedCoins as &$actualIterationCoin) {
+            if ($coin->id == $actualIterationCoin->id) {
+                $actualIterationCoin = $actualIterationCoin->add($coin);
+                return $actualIterationCoin;
+            }
+        }
+
         $this->buyedCoins[] = $coin;
+
+        return $coin;
     }
 }

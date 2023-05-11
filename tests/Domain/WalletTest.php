@@ -21,4 +21,26 @@ class WalletTest extends TestCase
 
         $this->assertEquals(3, $wallet->getNumOfBuyedCoins());
     }
+
+    /**
+     * @test
+     */
+    public function sumsCoinWhenBuyOld()
+    {
+        $wallet = new Wallet(1);
+
+        $coin1 = new Coin(
+            1,
+            'moneda1',
+            '.',
+            5,
+            100
+        );
+        $wallet->buy(new Coin(2));
+        $wallet->buy($coin1);
+        $wallet->buy(new Coin(3));
+        $wallet->buy($coin1);
+
+        $this->assertEquals(10, $wallet->getCoinById(1)->ammount);
+    }
 }

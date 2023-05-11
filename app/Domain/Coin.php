@@ -23,4 +23,12 @@ class Coin
         $this->ammount = $ammount;
         $this->invertedMoney = $invertedMoney;
     }
+
+    public function add(Coin $coinToAdd): Coin
+    {
+        $this->ammount = $this->ammount + $coinToAdd->ammount;
+        $this->invertedMoney = $this->invertedMoney + $coinToAdd->invertedMoney;
+
+        return $this;
+    }
 }
