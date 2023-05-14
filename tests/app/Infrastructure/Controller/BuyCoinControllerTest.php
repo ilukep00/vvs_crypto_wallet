@@ -3,6 +3,7 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use App\Domain\Coin;
+use App\Domain\Wallet;
 use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Tests\TestCase;
@@ -105,5 +106,30 @@ class BuyCoinControllerTest extends TestCase
 
         $response->assertStatus(404);
         $response->assertExactJson(["Cartera no encontrada"]);
+    }
+
+    /**
+     * @test
+     */
+    public function buyCoinSuccess()
+    {
+        $this->coinDataSource
+            ->expects("searchCoin")
+            ->with('c_000001')
+            ->andReturn(new Coin());
+
+        $this->walletDataSource
+            ->expects("searchWallet")
+            ->with('w_000001')
+            ->andReturn(new Wallet('w_000001'));
+        $response = $this->postJson(
+            '/api/coin/buy',
+            ['coin_id' => "c_000001",
+                'wallet_id' => 'w_000001',
+                'amount_usd' => 1]
+        );
+
+        $response->assertStatus(200);
+        $response->assertExactJson(["Compra realizada"]);
     }
 }
