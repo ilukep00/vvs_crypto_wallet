@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use App\Domain\User;
+use Illuminate\Support\Facades\Cache;
 
 class CreateWalletController extends BaseController
 {

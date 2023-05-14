@@ -7,15 +7,22 @@ use App\Domain\Wallet;
 
 class WalletDataSource
 {
+    private UserDataSource $userDataSource;
+
+    public function __construct()
+    {
+        $this->userDataSource = new UserDataSource();
+    }
+
     public function createWallet(string $userId): string|null
     {
-        if (is_null(Cache::get($userId))) {
+        if (is_null(Cache::get("u_" . $userId))) {
             return null;
         }
 
-        $user = Cache::get($userId);
-
+        $user = Cache::get("u_" . $userId);
         $newWallet = $user->newWallet();
+        $this->userDataSource->save($user);
 
         if ($newWallet == null) {
             return null;

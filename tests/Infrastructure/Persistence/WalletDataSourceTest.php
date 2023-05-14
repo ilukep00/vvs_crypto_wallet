@@ -20,11 +20,12 @@ class WalletDataSourceTest extends TestCase
         Cache::shouldReceive('get')
             ->with('u_1')
             ->andReturn($user);
-        Cache::expects('forever');
+        Cache::shouldReceive('forever')
+            ->atLeast(1);
 
         $walletDataSource = new WalletDataSource();
 
-        $response = $walletDataSource->createWallet('u_1');
+        $response = $walletDataSource->createWallet('1');
 
         $this->assertEquals('1_1', $response);
     }
@@ -40,7 +41,7 @@ class WalletDataSourceTest extends TestCase
 
         $walletDataSource = new WalletDataSource();
 
-        $response = $walletDataSource->createWallet('u_1');
+        $response = $walletDataSource->createWallet('1');
 
         $this->assertNull($response);
     }
