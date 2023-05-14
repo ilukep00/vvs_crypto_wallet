@@ -29,4 +29,5 @@ Vagrantfile
 *.ssh-key
 vendor/
 GitHubkey
+id_ed25519
 .gitignore
