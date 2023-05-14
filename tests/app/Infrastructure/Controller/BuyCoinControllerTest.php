@@ -37,4 +37,11 @@ class BuyCoinControllerTest extends TestCase
         $response->assertStatus(400);
         $response->assertExactJson([]);
     }
+
+    /**
+     * @test
+     */
+    public function buyCoinNotFoundError()
+    {
+    }
 }
