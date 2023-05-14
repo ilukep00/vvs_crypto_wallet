@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Controllers;
 
 use App\Infrastructure\Persistence\CoinDataSource;
+use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,12 +14,16 @@ class BuyCoinController extends BaseController
 {
     private CoinDataSource $coinDataSource;
 
+    private WalletDataSource $walletDataSource;
+
     /**
      * @param CoinDataSource $coinDataSource
+     * @param WalletDataSource $walletDataSource
      */
-    public function __construct(CoinDataSource $coinDataSource)
+    public function __construct(CoinDataSource $coinDataSource, WalletDataSource $walletDataSource)
     {
         $this->coinDataSource = $coinDataSource;
+        $this->walletDataSource = $walletDataSource;
     }
 
 
@@ -36,8 +41,12 @@ class BuyCoinController extends BaseController
             return response()->json([], 400);
         }
 
-        if (is_null($this->coinDataSource->getCoinById($coin_id))) {
+        if (is_null($this->coinDataSource->searchCoin($coin_id))) {
             return response()->json(["Moneda no encontrada"], 404);
+        }
+
+        if (is_null($this->walletDataSource->searchWallet($wallet_id))) {
+            return response()->json(["Cartera no encontrada"], 404);
         }
     }
 }
