@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class SellCoinController
 {
-
     private WalletDataSource $walletDataSource;
 
     public function __construct(WalletDataSource $walletDataSource)
