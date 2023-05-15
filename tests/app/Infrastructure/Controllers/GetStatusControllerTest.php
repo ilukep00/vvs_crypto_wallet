@@ -1,7 +1,12 @@
 <?php
 
-namespace Tests\app\Infrastructure\Persistence;
+namespace Tests\app\Infrastructure\Controllers;
 
+use App\Application\UserDataSource\UserDataSource;
+use App\Domain\User;
+use Exception;
+use Illuminate\Http\Response;
+use Mockery;
 use Tests\TestCase;
 
 class GetStatusControllerTest extends TestCase
