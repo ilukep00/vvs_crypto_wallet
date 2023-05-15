@@ -4,10 +4,10 @@ namespace App\Domain;
 
 class Wallet
 {
-    private int $id;
+    private string $id;
     private array $buyedCoins;
 
-    public function __construct(int $id)
+    public function __construct(string $id)
     {
         $this->id = $id;
         $this->buyedCoins = [];
@@ -23,7 +23,7 @@ class Wallet
         return count($this->buyedCoins);
     }
 
-    public function getCoinById(int $id): Coin|null
+    public function getCoinById(string $id): Coin|null
     {
         foreach ($this->buyedCoins as &$actualIterationCoin) {
             if ($id == $actualIterationCoin->id) {
