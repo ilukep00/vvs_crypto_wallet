@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers;
 
 use App\Domain\Coin;
 use App\Domain\Wallet;
@@ -122,6 +122,10 @@ class BuyCoinControllerTest extends TestCase
             ->expects("searchWallet")
             ->with('w_000001')
             ->andReturn(new Wallet('w_000001'));
+        $this->walletDataSource
+            ->expects("saveWallet")
+            ->once();
+
         $response = $this->postJson(
             '/api/coin/buy',
             ['coin_id' => "c_000001",

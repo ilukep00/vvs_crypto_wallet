@@ -9,7 +9,7 @@ class WalletDataSource
 {
     public function searchWallet(string $walletId): Wallet|null
     {
-        return null;
+        return new Wallet();
     }
     public function createWallet(string $userId): string|null
     {
@@ -20,5 +20,9 @@ class WalletDataSource
         // TODO
 
         return Cache::get($userId);
+    }
+
+    public function saveWallet(Wallet $wallet)
+    {
     }
 }
