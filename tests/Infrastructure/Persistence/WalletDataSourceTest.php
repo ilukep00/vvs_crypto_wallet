@@ -18,7 +18,7 @@ class WalletDataSourceTest extends TestCase
     {
         $user = new User(1);
         Cache::shouldReceive('get')
-            ->with('u_1')
+            ->with('user_1')
             ->andReturn($user);
         Cache::shouldReceive('forever')
             ->atLeast(1);
@@ -36,7 +36,7 @@ class WalletDataSourceTest extends TestCase
     public function returnsNullWhenUserDontExist()
     {
         Cache::shouldReceive('get')
-            ->with('u_1')
+            ->with('user_1')
             ->andReturn(null);
 
         $walletDataSource = new WalletDataSource();

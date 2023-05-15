@@ -9,6 +9,6 @@ class UserDataSource
 {
     public function save(User $user): void
     {
-        Cache::forever("u_" . $user->getId(), $user);
+        Cache::forever("user_" . $user->getId(), $user);
     }
 }

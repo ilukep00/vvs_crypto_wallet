@@ -16,11 +16,11 @@ class WalletDataSource
 
     public function createWallet(string $userId): string|null
     {
-        if (is_null(Cache::get("u_" . $userId))) {
+        if (is_null(Cache::get("user_" . $userId))) {
             return null;
         }
 
-        $user = Cache::get("u_" . $userId);
+        $user = Cache::get("user_" . $userId);
         $newWallet = $user->newWallet();
         $this->userDataSource->save($user);
 
@@ -28,7 +28,7 @@ class WalletDataSource
             return null;
         }
 
-        Cache::forever("w_" . $newWallet->getId(), $newWallet);
+        Cache::forever("wallet_" . $newWallet->getId(), $newWallet);
 
         return $newWallet->getId();
     }
