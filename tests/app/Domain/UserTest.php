@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Domain;
+namespace Tests\app\Domain;
 
 use App\Domain\User;
-use App\Domain\Wallet;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase

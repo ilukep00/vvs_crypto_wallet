@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Persistence;
 
 use App\Infrastructure\Persistence\WalletDataSource;
-use Tests\TestCase;
 use Mockery;
+use Tests\TestCase;
 
 class CreateWalletControllerTest extends TestCase
 {

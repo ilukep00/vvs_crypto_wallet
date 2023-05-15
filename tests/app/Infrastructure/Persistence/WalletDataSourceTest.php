@@ -1,13 +1,11 @@
 <?php
 
-namespace Tests\Infrastructure\Persistence;
+namespace Tests\app\Infrastructure\Persistence;
 
-use App\Infrastructure\Persistence\WalletDataSource;
 use App\Domain\User;
-use App\Domain\Wallet;
+use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
-use Mockery;
 
 class WalletDataSourceTest extends TestCase
 {
