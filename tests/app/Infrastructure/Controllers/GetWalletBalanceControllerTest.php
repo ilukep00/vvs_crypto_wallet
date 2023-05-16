@@ -21,4 +21,15 @@ class GetWalletBalanceControllerTest extends TestCase
         $response2->assertStatus(400);
         $response2->assertExactJson([]);
     }
+
+    /**
+     * @test
+     */
+    public function returnsErrorOnWalletNotFound()
+    {
+        $response1 = $this->get('/api/wallet/1_1/balance');
+
+        $response1->assertStatus(404);
+        $response1->assertExactJson([]);
+    }
 }
