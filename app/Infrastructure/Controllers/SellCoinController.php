@@ -31,7 +31,7 @@ class SellCoinController
             return response()->json([], 404);
         }
 
-        $coin = $this->coinDataSource->searchCoin($jsonData['coin_id']);
+        $coin = $wallet->getCoinById($jsonData['coin_id']);
         if (is_null($coin)) {
             return response()->json([], 404);
         }

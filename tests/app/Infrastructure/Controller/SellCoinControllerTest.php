@@ -2,7 +2,8 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
-use App\Infrastructure\Persistence\CoinDataSource;
+use App\Domain\Coin;
+use App\Domain\Wallet;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Mockery;
 use Tests\TestCase;
@@ -10,17 +11,12 @@ use Tests\TestCase;
 class SellCoinControllerTest extends TestCase
 {
     private WalletDataSource $walletDataSource;
-    private CoinDataSource $coinDataSource;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->coinDataSource = Mockery::mock(CoinDataSource::class);
-        $this->app->bind(CoinDataSource::class, function () {
-            return $this->coinDataSource;
-        });
         $this->app->bind(WalletDataSource::class, function () {
             return $this->walletDataSource;
         });
@@ -66,16 +62,17 @@ class SellCoinControllerTest extends TestCase
     public function returnsErrorOnCoinNotFound()
     {
         $walletId = 'walletId';
+        $coinId = '1';
+
+        $spectedWallet = Mockery::mock(Wallet::class);
+        $spectedWallet->expects('getCoinById')
+            ->with($coinId)
+            ->andReturn(null);
+
         $this->walletDataSource
             ->expects('searchWallet')
             ->with($walletId)
-            ->andReturn('ok');
-
-        $coinId = 'id_invalido';
-        $this->coinDataSource
-            ->expects('searchCoin')
-            ->with($coinId)
-            ->andReturn(null);
+            ->andReturn($spectedWallet);
 
         $response = $this->postJson('/api/coin/sell', [
             'coin_id' => $coinId,
@@ -92,16 +89,17 @@ class SellCoinControllerTest extends TestCase
     public function returnsSellCoinSuccess()
     {
         $walletId = 'walletId';
+        $coinId = '1';
+
+        $spectedWallet = Mockery::mock(Wallet::class);
+        $spectedWallet->expects('getCoinById')
+            ->with($coinId)
+            ->andReturn(new Coin($coinId));
+
         $this->walletDataSource
             ->expects('searchWallet')
             ->with($walletId)
-            ->andReturn('ok');
-
-        $coinId = 'id_invalido';
-        $this->coinDataSource
-            ->expects('searchCoin')
-            ->with($coinId)
-            ->andReturn("ok");
+            ->andReturn($spectedWallet);
 
         $response = $this->postJson('/api/coin/sell', [
             'coin_id' => $coinId,

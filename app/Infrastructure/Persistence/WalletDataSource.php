@@ -2,9 +2,11 @@
 
 namespace App\Infrastructure\Persistence;
 
+use App\Domain\Wallet;
+
 class WalletDataSource
 {
-    public function searchWallet(string $walletId): string|null
+    public function searchWallet(string $walletId): Wallet|null
     {
         //TODO
         /*if ($walletId == 'walletId') {

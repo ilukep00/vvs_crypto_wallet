@@ -31,4 +31,38 @@ class Coin
 
         return $this;
     }
+
+    /**
+     * @return float|int
+     */
+    public function getAmmount(): float|int
+    {
+        return $this->ammount;
+    }
+
+    /**
+     * @param float|int $ammount
+     */
+    public function setAmmount(float|int $ammount): void
+    {
+        $this->ammount = $ammount;
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getInvertedMoney(): float|int
+    {
+        return $this->invertedMoney;
+    }
+
+    /**
+     * @param float|int $invertedMoney
+     */
+    public function setInvertedMoney(float|int $invertedMoney): void
+    {
+        $this->invertedMoney = $invertedMoney;
+    }
+
+
 }
