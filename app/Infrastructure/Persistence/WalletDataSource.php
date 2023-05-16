@@ -32,4 +32,9 @@ class WalletDataSource
 
         return $newWallet->getId();
     }
+
+    public function searchWallet(string $wallet_id): Wallet|null
+    {
+        return Cache::get("wallet_" . $wallet_id);
+    }
 }
