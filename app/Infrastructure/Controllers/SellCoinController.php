@@ -36,6 +36,6 @@ class SellCoinController
             return response()->json([], 404);
         }
 
-        return response()->json([], 200);
+        return response()->json(['venta realizada'], 200);
     }
 }

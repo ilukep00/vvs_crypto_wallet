@@ -85,4 +85,30 @@ class SellCoinControllerTest extends TestCase
         $response->assertStatus(404);
         $response->assertExactJson([]);
     }
+
+    /**
+     * @test
+     */
+    public function returnsSellCoinSuccess()
+    {
+        $walletId = 'walletId';
+        $this->walletDataSource
+            ->expects('searchWallet')
+            ->with($walletId)
+            ->andReturn('ok');
+
+        $coinId = 'id_invalido';
+        $this->coinDataSource
+            ->expects('searchCoin')
+            ->with($coinId)
+            ->andReturn("ok");
+
+        $response = $this->postJson('/api/coin/sell', [
+            'coin_id' => $coinId,
+            'wallet_id' => $walletId,
+            'amount_usd' => 4]);
+
+        $response->assertStatus(200);
+        $response->assertExactJson(['venta realizada']);
+    }
 }
