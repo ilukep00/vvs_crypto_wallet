@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Domain;
+namespace Tests\app\Domain;
 
 use App\Domain\Coin;
 use App\Domain\Wallet;

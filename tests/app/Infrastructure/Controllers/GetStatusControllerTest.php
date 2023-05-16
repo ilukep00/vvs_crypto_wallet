@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers;
 
 use App\Application\UserDataSource\UserDataSource;
 use App\Domain\User;
