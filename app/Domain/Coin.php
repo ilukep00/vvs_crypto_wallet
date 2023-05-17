@@ -63,6 +63,4 @@ class Coin
     {
         $this->invertedMoney = $invertedMoney;
     }
-
-
 }

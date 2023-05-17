@@ -94,7 +94,34 @@ class SellCoinControllerTest extends TestCase
         $spectedWallet = Mockery::mock(Wallet::class);
         $spectedWallet->expects('getCoinById')
             ->with($coinId)
-            ->andReturn(new Coin($coinId));
+            ->andReturn(new Coin($coinId, '', '', 4));
+
+        $this->walletDataSource
+            ->expects('searchWallet')
+            ->with($walletId)
+            ->andReturn($spectedWallet);
+
+        $response = $this->postJson('/api/coin/sell', [
+            'coin_id' => $coinId,
+            'wallet_id' => $walletId,
+            'amount_usd' => 2]);
+
+        $response->assertStatus(200);
+        $response->assertExactJson(['venta realizada']);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsErrorOnCoinNotEnoughAmmount()
+    {
+        $walletId = 'walletId';
+        $coinId = '1';
+
+        $spectedWallet = Mockery::mock(Wallet::class);
+        $spectedWallet->expects('getCoinById')
+            ->with($coinId)
+            ->andReturn(new Coin($coinId, '', '', 2));
 
         $this->walletDataSource
             ->expects('searchWallet')
@@ -106,7 +133,7 @@ class SellCoinControllerTest extends TestCase
             'wallet_id' => $walletId,
             'amount_usd' => 4]);
 
-        $response->assertStatus(200);
-        $response->assertExactJson(['venta realizada']);
+        $response->assertStatus(404);
+        $response->assertExactJson([]);
     }
 }

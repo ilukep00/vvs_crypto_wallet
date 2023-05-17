@@ -36,6 +36,10 @@ class SellCoinController
             return response()->json([], 404);
         }
 
+        if ($coin->getAmmount() < $jsonData['amount_usd']) {
+            return response()->json([], 404);
+        }
+
         return response()->json(['venta realizada'], 200);
     }
 }
