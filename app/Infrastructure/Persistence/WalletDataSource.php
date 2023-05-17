@@ -3,16 +3,12 @@
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\Wallet;
+use Illuminate\Support\Facades\Cache;
 
 class WalletDataSource
 {
     public function searchWallet(string $walletId): Wallet|null
     {
-        //TODO
-        /*if ($walletId == 'walletId') {
-            return 'ok';
-        }*/
-
-        return null;
+        return Cache::get('wallet_'.$walletId);
     }
 }
