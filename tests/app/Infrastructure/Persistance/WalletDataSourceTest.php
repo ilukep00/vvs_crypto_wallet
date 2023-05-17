@@ -12,7 +12,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function WalletIsNotFoundInCache()
+    public function walletIsNotFoundInCache()
     {
         Cache::shouldReceive('get')
             ->with('wallet_0001')
@@ -28,7 +28,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function WalletIsFoundInCache()
+    public function walletIsFoundInCache()
     {
         $wallet = new Wallet('0001');
         Cache::shouldReceive('get')
@@ -41,5 +41,4 @@ class WalletDataSourceTest extends TestCase
 
         $this->assertEquals($response, $wallet);
     }
-
 }

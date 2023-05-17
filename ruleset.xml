@@ -21,7 +21,7 @@
         <properties>
             <property name="exceptions">
                 <value>
-                    \Mockery,\Illuminate\Support\Facades\Broadcast,\Illuminate\Support\Facades\RateLimiter
+                    \Mockery,\Illuminate\Support\Facades\Broadcast,\Illuminate\Support\Facades\RateLimiter,\Illuminate\Support\Facades\Cache
                 </value>
             </property>
         </properties>

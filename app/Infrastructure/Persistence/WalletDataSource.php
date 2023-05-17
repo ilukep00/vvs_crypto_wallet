@@ -9,6 +9,6 @@ class WalletDataSource
 {
     public function searchWallet(string $walletId): Wallet|null
     {
-        return Cache::get('wallet_'.$walletId);
+        return Cache::get('wallet_' . $walletId);
     }
 }
