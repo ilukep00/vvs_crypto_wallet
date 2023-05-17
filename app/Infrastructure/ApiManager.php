@@ -24,7 +24,6 @@ class ApiManager
         $response = curl_exec($curl);
 
         curl_close($curl);
-        print_r($response);
         return $response;
     }
 }

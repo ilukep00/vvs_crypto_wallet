@@ -41,11 +41,10 @@ class BuyCoinController extends BaseController
             return response()->json([], 400);
         }
 
-        $coin = $this->coinDataSource->searchCoin($coin_id); //BUSCA LA MONEDA LLAMANDO A LA API
+        $coin = $this->coinDataSource->searchCoin($coin_id, $amount_usd); //BUSCA LA MONEDA LLAMANDO A LA API
         if (is_null($coin)) {
             return response()->json(["Moneda no encontrada"], 404);
         }
-        $coin->ammount = $amount_usd;
         $wallet = $this->walletDataSource->searchWallet($wallet_id); //BUSCA EL WALLET EN CACHE
         if (is_null($wallet)) {
             return response()->json(["Cartera no encontrada"], 404);

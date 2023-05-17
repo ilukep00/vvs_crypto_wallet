@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Infrastructure\Persistence;
+namespace Tests\app\Infrastructure\Persistence;
 
 use App\Domain\Coin;
 use App\Infrastructure\ApiManager;
 use App\Infrastructure\Persistence\CoinDataSource;
-use PHPUnit\Framework\TestCase;
 use Mockery;
+use Tests\TestCase;
 
 class CoinDataSourceTest extends TestCase
 {
@@ -24,7 +24,7 @@ class CoinDataSourceTest extends TestCase
         $bad_id = -1;
         $coinDataSource = new CoinDataSource($apiManager);
 
-        $response = $coinDataSource->searchCoin($bad_id);
+        $response = $coinDataSource->searchCoin($bad_id, 2);
 
         $this->assertNull($response);
     }
@@ -47,11 +47,11 @@ class CoinDataSourceTest extends TestCase
                     }
                 ]');
 
-        $coin = new Coin("3", "Vertcoin", "VTC", 0, 0.081965);
+        $coin = new Coin("3", "Vertcoin", "VTC", 1, 0.081965);
         $coin_id = 3;
         $coinDataSource = new CoinDataSource($apiManager);
 
-        $response = $coinDataSource->searchCoin($coin_id);
+        $response = $coinDataSource->searchCoin($coin_id, 1);
 
         $this->assertEquals($response, $coin);
     }

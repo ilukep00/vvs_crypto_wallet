@@ -9,20 +9,11 @@ class WalletDataSource
 {
     public function searchWallet(string $walletId): Wallet|null
     {
-        return new Wallet();
-    }
-    public function createWallet(string $userId): string|null
-    {
-        if (is_null(Cache::get($userId))) {
-            return null;
-        }
-
-        // TODO
-
-        return Cache::get($userId);
+        return Cache::get("wallet_" . $walletId);
     }
 
     public function saveWallet(Wallet $wallet)
     {
+        Cache::forever("wallet_" . $wallet->getId(), $wallet);
     }
 }

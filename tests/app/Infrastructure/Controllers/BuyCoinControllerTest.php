@@ -4,6 +4,7 @@ namespace Tests\app\Infrastructure\Controllers;
 
 use App\Domain\Coin;
 use App\Domain\Wallet;
+use App\Infrastructure\ApiManager;
 use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Tests\TestCase;
@@ -14,6 +15,7 @@ class BuyCoinControllerTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
     private WalletDataSource $walletDataSource;
+    private ApiManager $apiManager;
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,7 +70,7 @@ class BuyCoinControllerTest extends TestCase
     {
         $this->coinDataSource
             ->expects("searchCoin")
-            ->with('c_000001')
+            ->with('c_000001', 1)
             ->andReturnNull();
 
         $response = $this->postJson(
@@ -89,7 +91,7 @@ class BuyCoinControllerTest extends TestCase
     {
         $this->coinDataSource
             ->expects("searchCoin")
-            ->with('c_000001')
+            ->with('c_000001', 1)
             ->andReturn(new Coin());
 
         $this->walletDataSource
@@ -115,7 +117,7 @@ class BuyCoinControllerTest extends TestCase
     {
         $this->coinDataSource
             ->expects("searchCoin")
-            ->with('c_000001')
+            ->with('c_000001', 1)
             ->andReturn(new Coin());
 
         $this->walletDataSource
