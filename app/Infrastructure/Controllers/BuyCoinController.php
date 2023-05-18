@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Application\BuyCoinService;
 use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
@@ -12,18 +13,14 @@ use Exception;
 
 class BuyCoinController extends BaseController
 {
-    private CoinDataSource $coinDataSource;
-
-    private WalletDataSource $walletDataSource;
+    private BuyCoinService $buyCoinService;
 
     /**
-     * @param CoinDataSource $coinDataSource
-     * @param WalletDataSource $walletDataSource
+     * @param BuyCoinService $buyCoinService
      */
-    public function __construct(CoinDataSource $coinDataSource, WalletDataSource $walletDataSource)
+    public function __construct(BuyCoinService $buyCoinService)
     {
-        $this->coinDataSource = $coinDataSource;
-        $this->walletDataSource = $walletDataSource;
+        $this->buyCoinService = $buyCoinService;
     }
 
 
@@ -40,18 +37,11 @@ class BuyCoinController extends BaseController
         if (gettype($coin_id) != 'string' || gettype($wallet_id) != 'string' || gettype($amount_usd) != 'integer') {
             return response()->json([], 400);
         }
-
-        $coin = $this->coinDataSource->searchCoin($coin_id, $amount_usd); //BUSCA LA MONEDA LLAMANDO A LA API
-        if (is_null($coin)) {
-            return response()->json(["Moneda no encontrada"], 404);
+        try {
+            $this->buyCoinService->execute($coin_id, $wallet_id, $amount_usd);
+        } catch (Exception $ex) {
+            return response()->json([$ex->getMessage()], 404);
         }
-        $wallet = $this->walletDataSource->searchWallet($wallet_id); //BUSCA EL WALLET EN CACHE
-        if (is_null($wallet)) {
-            return response()->json(["Cartera no encontrada"], 404);
-        }
-        $wallet->buy($coin);
-        $this->walletDataSource->saveWallet($wallet);
-        //LA VUELVO EN GUARDAR
         return response()->json(["Compra realizada"], 200);
     }
 }

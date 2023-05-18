@@ -2,6 +2,7 @@
 
 namespace Tests\app\Infrastructure\Controllers;
 
+use App\Application\BuyCoinService;
 use App\Domain\Coin;
 use App\Domain\Wallet;
 use App\Infrastructure\ApiManager;
@@ -15,19 +16,18 @@ class BuyCoinControllerTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
     private WalletDataSource $walletDataSource;
+    private BuyCoinService $buyCoinService;
     private ApiManager $apiManager;
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->coinDataSource = Mockery::mock(CoinDataSource::class);
-        $this->app->bind(CoinDataSource::class, function () {
-            return $this->coinDataSource;
-        });
-
         $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
+        $this->buyCoinService = new BuyCoinService($this->coinDataSource, $this->walletDataSource);
+
+        $this->app->bind(BuyCoinService::class, function () {
+            return $this->buyCoinService;
         });
     }
 
