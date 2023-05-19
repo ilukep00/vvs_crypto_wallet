@@ -33,8 +33,13 @@ class WalletDataSource
         return $newWallet->getId();
     }
 
-    public function searchWallet(string $wallet_id): Wallet|null
+    public function searchWallet(string $walletId): Wallet|null
     {
-        return Cache::get("wallet_" . $wallet_id);
+        return Cache::get("wallet_" . $walletId);
+    }
+
+    public function saveWallet(Wallet $wallet)
+    {
+        Cache::forever("wallet_" . $wallet->getId(), $wallet);
     }
 }
