@@ -25,13 +25,22 @@ class Wallet
 
     public function getCoinById(int $id): Coin|null
     {
-        foreach ($this->buyedCoins as &$actualIterationCoin) {
+        foreach ($this->buyedCoins as $actualIterationCoin) {
             if ($id == $actualIterationCoin->id) {
                 return $actualIterationCoin;
             }
         }
 
         return null;
+    }
+
+    public function deleteCoinById(int $id): void
+    {
+        for ($index=0; $index<count($this->buyedCoins); $index++) {
+            if ($id == $this->buyedCoins[$index]->id) {
+                unset($this->buyedCoins[$index]);
+            }
+        }
     }
 
     public function buy(Coin $coin): Coin

@@ -49,18 +49,11 @@ class Coin
     }
 
     /**
-     * @return float|int
+     * @return string
      */
-    public function getInvertedMoney(): float|int
+    public function getId(): string
     {
-        return $this->invertedMoney;
+        return $this->id;
     }
 
-    /**
-     * @param float|int $invertedMoney
-     */
-    public function setInvertedMoney(float|int $invertedMoney): void
-    {
-        $this->invertedMoney = $invertedMoney;
-    }
 }

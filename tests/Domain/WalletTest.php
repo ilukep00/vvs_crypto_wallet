@@ -43,4 +43,19 @@ class WalletTest extends TestCase
 
         $this->assertEquals(10, $wallet->getCoinById(1)->ammount);
     }
+
+    /**
+     * @test
+     */
+    public function deleteCoinIfExists()
+    {
+        $wallet = new Wallet(1);
+
+        $wallet->buy(new Coin('1'));
+        $wallet->deleteCoinById('1');
+
+        $this->assertNull($wallet->getCoinById('1'));
+    }
+
+
 }
