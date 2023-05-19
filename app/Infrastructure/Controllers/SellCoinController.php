@@ -37,8 +37,16 @@ class SellCoinController
         }
 
         if ($coin->getAmmount() < $jsonData['amount_usd']) {
-            return response()->json([], 404);
+            return response()->json([], 400);
         }
+
+        $coin->setAmmount($coin->getAmmount() - $jsonData['amount_usd']);
+
+        if ($coin->getAmmount() == 0) {
+            $wallet->deleteCoinById($coin->getId());
+        }
+
+        $this->walletDataSource->saveWallet($wallet);
 
         return response()->json(['venta realizada'], 200);
     }

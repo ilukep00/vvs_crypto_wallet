@@ -11,4 +11,9 @@ class WalletDataSource
     {
         return Cache::get('wallet_' . $walletId);
     }
+
+    public function saveWallet(Wallet $wallet): void
+    {
+        Cache::forever("wallet_" . $wallet->getId(), $wallet);
+    }
 }

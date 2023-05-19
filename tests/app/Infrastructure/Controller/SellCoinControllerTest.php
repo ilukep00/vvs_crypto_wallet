@@ -101,6 +101,11 @@ class SellCoinControllerTest extends TestCase
             ->with($walletId)
             ->andReturn($spectedWallet);
 
+        $this->walletDataSource
+            ->expects('saveWallet')
+            ->with($spectedWallet)
+            ->andReturnNull();
+
         $response = $this->postJson('/api/coin/sell', [
             'coin_id' => $coinId,
             'wallet_id' => $walletId,
@@ -133,7 +138,7 @@ class SellCoinControllerTest extends TestCase
             'wallet_id' => $walletId,
             'amount_usd' => 4]);
 
-        $response->assertStatus(404);
+        $response->assertStatus(400);
         $response->assertExactJson([]);
     }
 }
