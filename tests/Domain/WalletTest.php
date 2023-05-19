@@ -56,6 +56,4 @@ class WalletTest extends TestCase
 
         $this->assertNull($wallet->getCoinById('1'));
     }
-
-
 }

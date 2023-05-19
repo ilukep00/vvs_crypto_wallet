@@ -55,5 +55,4 @@ class Coin
     {
         return $this->id;
     }
-
 }

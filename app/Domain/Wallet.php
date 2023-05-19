@@ -36,7 +36,7 @@ class Wallet
 
     public function deleteCoinById(int $id): void
     {
-        for ($index=0; $index<count($this->buyedCoins); $index++) {
+        for ($index = 0; $index < count($this->buyedCoins); $index++) {
             if ($id == $this->buyedCoins[$index]->id) {
                 unset($this->buyedCoins[$index]);
             }
