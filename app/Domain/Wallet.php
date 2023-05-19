@@ -45,7 +45,7 @@ class Wallet
 
     public function buy(Coin $coin): Coin
     {
-        foreach ($this->buyedCoins as &$actualIterationCoin) {
+        foreach ($this->buyedCoins as $actualIterationCoin) {
             if ($coin->id == $actualIterationCoin->id) {
                 $actualIterationCoin->add($coin);
                 return $actualIterationCoin;
@@ -55,5 +55,10 @@ class Wallet
         $this->buyedCoins[] = $coin;
 
         return $coin;
+    }
+
+    public function getCoinList(): array
+    {
+        return $this->buyedCoins;
     }
 }
