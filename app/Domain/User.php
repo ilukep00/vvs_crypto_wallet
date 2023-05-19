@@ -32,7 +32,6 @@ class User
 
         $this->numOfWallets = $this->numOfWallets + 1;
         $walletId = sprintf('%d_%d', $this->id, $this->getNumOfWallets());
-
         return new Wallet($walletId);
     }
 }
