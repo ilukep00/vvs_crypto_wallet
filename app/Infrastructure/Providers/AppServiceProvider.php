@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind(WalletDataSource::class, function ($app) {
+            return new WalletDataSource();
+        });
     }
 
     /**

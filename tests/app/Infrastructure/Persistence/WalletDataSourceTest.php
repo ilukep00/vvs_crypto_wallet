@@ -5,8 +5,10 @@ namespace Tests\app\Infrastructure\Persistence;
 use App\Domain\Wallet;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Support\Facades\Cache;
+use App\Domain\User;
+use Tests\TestCase;
 
-class WalletDataSourceTest extends \Tests\TestCase
+class WalletDataSourceTest extends TestCase
 {
     private WalletDataSource $walletDataSource;
     protected function setUp(): void
@@ -14,7 +16,22 @@ class WalletDataSourceTest extends \Tests\TestCase
         parent::setUp();
         $this->walletDataSource = new WalletDataSource();
     }
+    /**
+     * @test
+     */
+    public function createsWalletWhenUserExists()
+    {
+        $user = new User(1);
+        Cache::shouldReceive('get')
+            ->with('user_1')
+            ->andReturn($user);
+        Cache::shouldReceive('forever')
+            ->atLeast(1);
 
+        $response = $this->walletDataSource->createWallet('1');
+
+        $this->assertEquals('1_1', $response);
+    }
     /**
      * @test
      */
@@ -53,5 +70,15 @@ class WalletDataSourceTest extends \Tests\TestCase
         $wallet = new Wallet("4");
 
         $this->walletDataSource->saveWallet($wallet);
+    }
+    public function returnsNullWhenUserDontExist()
+    {
+        Cache::shouldReceive('get')
+            ->with('user_1')
+            ->andReturn(null);
+
+        $response = $this->walletDataSource->createWallet('1');
+
+        $this->assertNull($response);
     }
 }

@@ -47,4 +47,9 @@ class Wallet
 
         return $coin;
     }
+
+    public function getCoinList(): array
+    {
+        return $this->buyedCoins;
+    }
 }
