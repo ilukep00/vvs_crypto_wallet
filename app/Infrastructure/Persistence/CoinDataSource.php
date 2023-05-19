@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Persistence;
 
 use App\Domain\Coin;
-use App\Domain\User;
 use App\Infrastructure\ApiManager;
 
 class CoinDataSource
