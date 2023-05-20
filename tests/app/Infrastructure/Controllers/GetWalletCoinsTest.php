@@ -30,9 +30,9 @@ class GetWalletCoinsTest extends TestCase
     {
         $this->walletDataSource
             ->expects('searchWallet')
-            ->with('2')
+            ->with('1_1')
             ->andReturn(null);
-        $response = $this->get('/api/wallet/2/');
+        $response = $this->get('/api/wallet/1_1/');
 
         $response->assertStatus(404);
         $response->assertExactJson([]);
@@ -57,8 +57,8 @@ class GetWalletCoinsTest extends TestCase
     {
         $this->walletDataSource
             ->expects('searchWallet')
-            ->with('111')
-            ->andReturn(new Wallet('111'));
+            ->with('1_1')
+            ->andReturn(new Wallet('1_1'));
         /*
         $wallet = new Wallet(1);
         $testCoin1 = new Coin('10','testcoin1','tc1',1,1);
@@ -67,7 +67,7 @@ class GetWalletCoinsTest extends TestCase
         $wallet->buy($testCoin2);
         */
 
-        $response = $this->get('/api/wallet/111/');
+        $response = $this->get('/api/wallet/1_1/');
 
         $response->assertStatus(200);
         $response->assertExactJson([]);
