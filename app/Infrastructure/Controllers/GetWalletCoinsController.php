@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 class GetWalletCoinsController extends BaseController
 {
     private WalletDataSource $walletDataSource;
-    private string $PATTERN = "/^[a-zA-Z0-9]+$/";
+    private string $PATTERN = "/^[a-zA-Z0-9]+_[a-zA-Z0-9]+$/";
     public function __construct(WalletDataSource $walletDataSource)
     {
         $this->walletDataSource = $walletDataSource;
