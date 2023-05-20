@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Infrastructure\ApiManager;
+use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,10 +12,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 class GetWalletBalanceController extends BaseController
 {
-    private WalletDataSource $walletDataSource;
-    public function __construct(WalletDataSource $walletDataSource)
+    private CoinDataSource $coinDataSource;
+    public function __construct(WalletDataSource $walletDataSource, CoinDataSource $coinDataSource)
     {
         $this->walletDataSource = $walletDataSource;
+        $this->coinDataSource = $coinDataSource;
     }
 
     public function __invoke(Request $request, string $walletId): JsonResponse
@@ -29,6 +32,15 @@ class GetWalletBalanceController extends BaseController
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([], 200);
+        $balance = 0;
+        $coinList = $wallet->getCoinList();
+
+        foreach ($coinList as $coin) {
+            $actualCoinValue = $this->coinDataSource->getCoinPrize($coin->getId());
+
+            $balance = $balance + (($coin->ammount * $actualCoinValue) - $coin->invertedMoney);
+        }
+
+        return response()->json(["balance_usd" => $balance], 200);
     }
 }
