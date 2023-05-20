@@ -34,7 +34,7 @@ class CoinDataSource
         return $coin;
     }
 
-    public function getCoinPrize($coinId): float|null
+    public function getCoinPrize(string $coinId): float|null
     {
         $response = $this->apiCalls->getCoin($coinId);
         if ($response == "[]") {
@@ -42,6 +42,6 @@ class CoinDataSource
         }
         $response = json_decode($response);
 
-        return $response[0]->price_usd;
+        return floatval($response[0]->price_usd);
     }
 }
