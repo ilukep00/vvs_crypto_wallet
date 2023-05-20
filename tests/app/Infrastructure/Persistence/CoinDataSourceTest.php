@@ -17,9 +17,9 @@ class CoinDataSourceTest extends TestCase
     {
         $apiManager = Mockery::mock(ApiManager::class);
         $apiManager->expects("getCoin")
-                    ->with(-1)
-                    ->once()
-                    ->andReturn("[]");
+            ->with(-1)
+            ->once()
+            ->andReturn("[]");
 
         $bad_id = -1;
         $coinDataSource = new CoinDataSource($apiManager);
@@ -54,5 +54,49 @@ class CoinDataSourceTest extends TestCase
         $response = $coinDataSource->searchCoin($coin_id, 1);
 
         $this->assertEquals($response, $coin);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsCoinPrizeIfFound()
+    {
+        $apiManager = Mockery::mock(ApiManager::class);
+        $apiManager->expects("getCoin")
+            ->with(3)
+            ->once()
+            ->andReturn('[
+                    {
+                        "id": "3",
+                        "symbol": "VTC",
+                        "name": "Vertcoin",
+                        "price_usd": "1"
+                    }
+                ]');
+
+        $coin = new Coin("3", "Vertcoin", "VTC", 1, 0.081965);
+        $coinDataSource = new CoinDataSource($apiManager);
+
+        $response = $coinDataSource->getCoinPrize('3');
+
+        $this->assertEquals(1, $response);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNullIfCoinPrizeNotFound()
+    {
+        $apiManager = Mockery::mock(ApiManager::class);
+        $apiManager->expects("getCoin")
+            ->with(3)
+            ->once()
+            ->andReturn('[]');
+
+        $coinDataSource = new CoinDataSource($apiManager);
+
+        $response = $coinDataSource->getCoinPrize('3');
+
+        $this->assertNull($response);
     }
 }

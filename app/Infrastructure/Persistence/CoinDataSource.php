@@ -33,4 +33,15 @@ class CoinDataSource
         );
         return $coin;
     }
+
+    public function getCoinPrize(string $coinId): float|null
+    {
+        $response = $this->apiCalls->getCoin($coinId);
+        if ($response == "[]") {
+            return null;
+        }
+        $response = json_decode($response);
+
+        return floatval($response[0]->price_usd);
+    }
 }

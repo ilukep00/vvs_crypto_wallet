@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/status', GetStatusController::class);
 Route::post('/coin/sell', SellCoinController::class);
 Route::post('/coin/buy', BuyCoinController::class);
