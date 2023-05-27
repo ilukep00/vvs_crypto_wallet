@@ -3,11 +3,8 @@
 namespace App\Infrastructure\Controllers;
 
 use App\Application\BuyCoinService;
-use App\Infrastructure\Persistence\CoinDataSource;
-use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Exception;
 

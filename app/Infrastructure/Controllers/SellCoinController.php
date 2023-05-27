@@ -2,20 +2,20 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Application\SellCoinService;
 use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Exception;
 
 class SellCoinController
 {
-    private WalletDataSource $walletDataSource;
-    private CoinDataSource $coinDataSource;
+    private SellCoinService $sellCoinService;
 
-    public function __construct(WalletDataSource $walletDataSource, CoinDataSource $coinDataSource)
+    public function __construct(SellCoinService $sellCoinService)
     {
-        $this->walletDataSource = $walletDataSource;
-        $this->coinDataSource = $coinDataSource;
+        $this->sellCoinService = $sellCoinService;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -25,29 +25,17 @@ class SellCoinController
         if (!isset($jsonData['coin_id']) || !isset($jsonData['wallet_id']) || !isset($jsonData['amount_usd'])) {
             return response()->json([], 400);
         }
-
-        $wallet = $this->walletDataSource->searchWallet($jsonData['wallet_id']);
-        if (is_null($wallet)) {
-            return response()->json([], 404);
+        try {
+            $this->sellCoinService->execute($jsonData['coin_id'], $jsonData['wallet_id'], $jsonData['amount_usd']);
+        } catch (Exception $ex) {
+            $statusCode = 400;
+            if ($ex->getMessage() == "Cartera no encontrada") {
+                $statusCode = 404;
+            } elseif ($ex->getMessage() == "Moneda no encontrada") {
+                $statusCode = 404;
+            }
+            return response()->json([], $statusCode);
         }
-
-        $coin = $wallet->getCoinById($jsonData['coin_id']);
-        if (is_null($coin)) {
-            return response()->json([], 404);
-        }
-
-        if ($coin->getAmmount() < $jsonData['amount_usd']) {
-            return response()->json([], 400);
-        }
-
-        $coin->setAmmount($coin->getAmmount() - $jsonData['amount_usd']);
-
-        if ($coin->getAmmount() == 0) {
-            $wallet->deleteCoinById($coin->getId());
-        }
-
-        $this->walletDataSource->saveWallet($wallet);
-
         return response()->json(['venta realizada'], 200);
     }
 }
