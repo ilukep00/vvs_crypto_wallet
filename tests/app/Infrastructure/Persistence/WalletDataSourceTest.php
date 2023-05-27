@@ -16,22 +16,7 @@ class WalletDataSourceTest extends TestCase
         parent::setUp();
         $this->walletDataSource = new WalletDataSource();
     }
-    /**
-     * @test
-     */
-    public function createsWalletWhenUserExists()
-    {
-        $user = new User(1);
-        Cache::shouldReceive('get')
-            ->with('user_1')
-            ->andReturn($user);
-        Cache::shouldReceive('forever')
-            ->atLeast(1);
 
-        $response = $this->walletDataSource->createWallet('1');
-
-        $this->assertEquals('1_1', $response);
-    }
     /**
      * @test
      */
@@ -61,6 +46,7 @@ class WalletDataSourceTest extends TestCase
 
         $this->assertEquals($response, $wallet);
     }
+
     /**
      * @test
      */
@@ -70,15 +56,5 @@ class WalletDataSourceTest extends TestCase
         $wallet = new Wallet("4");
 
         $this->walletDataSource->saveWallet($wallet);
-    }
-    public function returnsNullWhenUserDontExist()
-    {
-        Cache::shouldReceive('get')
-            ->with('user_1')
-            ->andReturn(null);
-
-        $response = $this->walletDataSource->createWallet('1');
-
-        $this->assertNull($response);
     }
 }

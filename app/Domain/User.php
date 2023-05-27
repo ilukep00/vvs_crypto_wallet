@@ -4,7 +4,6 @@ namespace App\Domain;
 
 class User
 {
-    private const MAX_WALLET_CREATIONS = 999;
     private int $id;
     private int $numOfWallets;
 
@@ -24,14 +23,10 @@ class User
         return $this->numOfWallets;
     }
 
-    public function newWallet(): Wallet|null
+    public function getNewWallet(): int
     {
-        if ($this->numOfWallets == self::MAX_WALLET_CREATIONS) {
-            return null;
-        }
-
         $this->numOfWallets = $this->numOfWallets + 1;
-        $walletId = sprintf('%d_%d', $this->id, $this->getNumOfWallets());
-        return new Wallet($walletId);
+
+        return $this->numOfWallets;
     }
 }
