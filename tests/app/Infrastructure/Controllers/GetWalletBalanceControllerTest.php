@@ -2,13 +2,11 @@
 
 namespace Tests\app\Infrastructure\Controllers;
 
+use App\Application\WalletBalanceService;
 use App\Domain\Coin;
 use App\Domain\Wallet;
-use App\Infrastructure\ApiManager;
 use App\Infrastructure\Persistence\CoinDataSource;
 use App\Infrastructure\Persistence\WalletDataSource;
-use Illuminate\Http\Response;
-use PHPUnit\Framework\MockObject\Api;
 use Tests\TestCase;
 use Mockery;
 
@@ -16,19 +14,18 @@ class GetWalletBalanceControllerTest extends TestCase
 {
     private WalletDataSource $walletDataSource;
     private CoinDataSource $coinDataSource;
+    private WalletBalanceService $walletBalanceService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
-        });
-
         $this->coinDataSource = Mockery::mock(CoinDataSource::class);
-        $this->app->bind(CoinDataSource::class, function () {
-            return $this->coinDataSource;
+        $this->walletBalanceService = new WalletBalanceService($this->coinDataSource, $this->walletDataSource);
+
+        $this->app->bind(WalletBalanceService::class, function () {
+            return $this->walletBalanceService;
         });
     }
 
