@@ -2,21 +2,22 @@
 
 namespace Tests\app\Infrastructure\Controllers;
 
+use App\Application\CreateWalletService;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Tests\TestCase;
 use Mockery;
 
 class CreateWalletControllerTest extends TestCase
 {
-    private WalletDataSource $walletDataSource;
+    private CreateWalletService $createWalletService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
+        $this->createWalletService = Mockery::mock(CreateWalletService::class);
+        $this->app->bind(CreateWalletService::class, function () {
+            return $this->createWalletService;
         });
     }
 
@@ -37,8 +38,8 @@ class CreateWalletControllerTest extends TestCase
     public function returnsErrorOnUserNotFound()
     {
         $idUsuario = 'id_usuario_invalido';
-        $this->walletDataSource
-            ->expects('createWallet')
+        $this->createWalletService
+            ->expects('execute')
             ->with($idUsuario)
             ->andReturn(null);
 
@@ -54,14 +55,14 @@ class CreateWalletControllerTest extends TestCase
     public function returnsWalletIdOnCreate()
     {
         $idUsuario = 'valid_user_id';
-        $this->walletDataSource
-            ->expects('createWallet')
+        $this->createWalletService
+            ->expects('execute')
             ->with($idUsuario)
-            ->andReturn('user123');
+            ->andReturn('1_1');
 
         $response = $this->postJson('/api/wallet/open', ['user_id' => $idUsuario]);
 
         $response->assertStatus(200);
-        $response->assertExactJson(['wallet_id' => 'user123']);
+        $response->assertExactJson(['wallet_id' => '1_1']);
     }
 }

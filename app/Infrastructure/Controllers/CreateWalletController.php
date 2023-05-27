@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Application\CreateWalletService;
 use App\Infrastructure\Persistence\WalletDataSource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,11 +13,11 @@ use Illuminate\Support\Facades\Cache;
 
 class CreateWalletController extends BaseController
 {
-    private WalletDataSource $walletDataSource;
+    private CreateWalletService $createWalletService;
 
-    public function __construct(WalletDataSource $walletDataSource)
+    public function __construct(CreateWalletService $createWalletService)
     {
-        $this->walletDataSource = $walletDataSource;
+        $this->createWalletService = $createWalletService;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -26,11 +27,11 @@ class CreateWalletController extends BaseController
         if (!isset($jsonData['user_id'])) {
             return response()->json([], 400);
         }
-        $wallet = $this->walletDataSource->createWallet($jsonData['user_id']);
-        if (is_null($wallet)) {
+        $walletId = $this->createWalletService->execute($jsonData['user_id']);
+        if (is_null($walletId)) {
             return response()->json([], 404);
         }
 
-        return response()->json(['wallet_id' => $wallet], 200);
+        return response()->json(['wallet_id' => $walletId], 200);
     }
 }

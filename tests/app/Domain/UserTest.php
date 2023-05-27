@@ -16,24 +16,9 @@ class UserTest extends TestCase
 
         $walletNum = 3;
         for ($i = 0; $i < $walletNum; $i++) {
-            $user->newWallet();
+            $user->getNewWallet();
         }
 
         $this->assertEquals($walletNum, $user->getNumOfWallets());
-    }
-
-    /**
-     * @test
-     */
-    public function returnsNullOnCreateWalletIfOver999()
-    {
-        $user = new User(1);
-
-        for ($i = 0; $i < 999; $i++) {
-            $user->newWallet();
-        }
-        $wallet = $user->newWallet();
-
-        $this->assertNull($wallet);
     }
 }

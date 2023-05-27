@@ -11,4 +11,9 @@ class UserDataSource
     {
         Cache::forever("user_" . $user->getId(), $user);
     }
+
+    public function search(string $userId): User|null
+    {
+        return Cache::get("user_" . $userId);
+    }
 }
