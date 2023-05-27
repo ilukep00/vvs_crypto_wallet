@@ -2,6 +2,7 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
+use App\Application\SellCoinService;
 use App\Domain\Coin;
 use App\Domain\Wallet;
 use App\Infrastructure\Persistence\WalletDataSource;
@@ -11,14 +12,16 @@ use Tests\TestCase;
 class SellCoinControllerTest extends TestCase
 {
     private WalletDataSource $walletDataSource;
+    private SellCoinService $sellCoinService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
+        $this->sellCoinService = new SellCoinService($this->walletDataSource);
+        $this->app->bind(SellCoinService::class, function () {
+            return $this->sellCoinService;
         });
     }
 
