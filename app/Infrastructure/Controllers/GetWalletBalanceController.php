@@ -2,21 +2,19 @@
 
 namespace App\Infrastructure\Controllers;
 
-use App\Infrastructure\ApiManager;
-use App\Infrastructure\Persistence\CoinDataSource;
-use App\Infrastructure\Persistence\WalletDataSource;
+use App\Application\WalletBalanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use Exception;
 
 class GetWalletBalanceController extends BaseController
 {
-    private CoinDataSource $coinDataSource;
-    public function __construct(WalletDataSource $walletDataSource, CoinDataSource $coinDataSource)
+    private WalletBalanceService $walletBalanceService;
+    public function __construct(WalletBalanceService $walletBalanceService)
     {
-        $this->walletDataSource = $walletDataSource;
-        $this->coinDataSource = $coinDataSource;
+        $this->walletBalanceService = $walletBalanceService;
     }
 
     public function __invoke(Request $request, string $walletId): JsonResponse
@@ -25,22 +23,13 @@ class GetWalletBalanceController extends BaseController
         if (count($idParts) != 2 or (!is_numeric($idParts[0]) or !is_numeric($idParts[1]))) {
             return response()->json([], 400);
         }
-
-        $wallet = $this->walletDataSource->searchWallet($walletId);
-
-        if (is_null($wallet)) {
+        try {
+            $balance = $this->walletBalanceService->execute($walletId);
+        } catch (Exception $exception) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
-
-        $balance = 0;
-        $coinList = $wallet->getCoinList();
-
-        foreach ($coinList as $coin) {
-            $actualCoinValue = $this->coinDataSource->getCoinPrize($coin->getId());
-
-            $balance = $balance + (($coin->ammount * $actualCoinValue) - $coin->invertedMoney);
-        }
-
         return response()->json(["balance_usd" => $balance], 200);
+
+        $wallet = $this->walletDataSource->searchWallet($walletId);
     }
 }
