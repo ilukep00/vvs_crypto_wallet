@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\Controllers;
 
+use App\Application\GetWalletCoinsService;
 use App\Infrastructure\Persistence\WalletDataSource;
+use Exception;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -10,11 +12,11 @@ use Illuminate\Http\Response;
 
 class GetWalletCoinsController extends BaseController
 {
-    private WalletDataSource $walletDataSource;
+    private GetWalletCoinsService $getWalletCoinsService;
     private string $PATTERN = "/^[a-zA-Z0-9]+_[a-zA-Z0-9]+$/";
-    public function __construct(WalletDataSource $walletDataSource)
+    public function __construct(GetWalletCoinsService $getWalletCoinsService)
     {
-        $this->walletDataSource = $walletDataSource;
+        $this->getWalletCoinsService = $getWalletCoinsService;
     }
 
     public function __invoke(Request $request, $wallet_id): JsonResponse
@@ -24,23 +26,12 @@ class GetWalletCoinsController extends BaseController
             return response()->json([], Response::HTTP_BAD_REQUEST);
         }
 
-        $wallet = $this->walletDataSource->searchWallet($wallet_id);
-
-        if (is_null($wallet)) {
+        try {
+            $coinData = $this->getWalletCoinsService->execute($wallet_id);
+        } catch (Exception $ex) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
-        $coinsInWallet  = $wallet->getCoinList();
-        $coinData = array();
-        foreach ($coinsInWallet as $coin) {
-            $coinData[] = array(
-                'coin_id' => $coin->id,
-                'name' => $coin->name,
-                'symbol' => $coin->symbol,
-                'amount' => $coin->ammount,
-                'value_usd' => $coin->invertedMoney
-            );
-        }
         return response()->json($coinData, Response::HTTP_OK);
     }
 }

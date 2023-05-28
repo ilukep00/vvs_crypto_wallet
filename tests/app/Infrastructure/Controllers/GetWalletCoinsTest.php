@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers;
 
+use App\Application\GetWalletCoinsService;
 use App\Domain\Coin;
 use App\Domain\Wallet;
 use App\Infrastructure\Persistence\WalletDataSource;
@@ -12,14 +13,16 @@ use Tests\TestCase;
 class GetWalletCoinsTest extends TestCase
 {
     private WalletDataSource $walletDataSource;
+    private GetWalletCoinsService $getWalletCoinsService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
+        $this->getWalletCoinsService = new GetWalletCoinsService($this->walletDataSource);
+        $this->app->bind(GetWalletCoinsService::class, function () {
+            return $this->getWalletCoinsService;
         });
     }
 
@@ -55,21 +58,22 @@ class GetWalletCoinsTest extends TestCase
      */
     public function getWalletCoinsRegularUse()
     {
+        $wallet = new Wallet('1_1');
+        $testCoin1 = new Coin('10', 'testcoin1', 'tc1', 1, 1);
+        $wallet->buy($testCoin1);
+
         $this->walletDataSource
             ->expects('searchWallet')
             ->with('1_1')
-            ->andReturn(new Wallet('1_1'));
-        /*
-        $wallet = new Wallet(1);
-        $testCoin1 = new Coin('10','testcoin1','tc1',1,1);
-        $testCoin2 = new Coin('20','testcoin2','tc2',2,2);
-        $wallet->buy($testCoin1);
-        $wallet->buy($testCoin2);
-        */
+            ->andReturn($wallet);
 
         $response = $this->get('/api/wallet/1_1/');
 
         $response->assertStatus(200);
-        $response->assertExactJson([]);
+        $response->assertExactJson([["amount" => 1,
+            "coin_id" => "10",
+            "name" => "testcoin1",
+            "symbol" => "tc1",
+            "value_usd" => 1]]);
     }
 }
